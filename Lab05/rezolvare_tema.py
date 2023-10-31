@@ -14,7 +14,7 @@ with pm.Model() as model:
     lambda_values = []
     for interval in intervale:
         start, end = interval
-        lambda_i = pm.Exponential(f'lambda_{start}_{end}', lam=1)  # Folosim 'lam' în loc de 'beta'
+        lambda_i = pm.Exponential(f'lambda_{start}_{end}', lam=1)
         lambda_values.append(lambda_i)
 
     # distributia poisson pt fiecare interval
