@@ -66,6 +66,10 @@ cpd_n = TabularCPD('N', 2, [[1/3, 1/2], [2/3, 1/2]], evidence=['StartPlayer'], e
 cpd_m = TabularCPD('M', 3, [[1/9, 1/4, 1/2, 1/2], [2/3, 1/2, 1/2, 1/2], [2/9, 1/4, 0, 0]], 
                    evidence=['StartPlayer', 'N'], evidence_card=[2, 2])
 
+# print(cpd_start_player)
+# print(cpd_n)
+# print(cpd_m)
+
 # asociem prob conditionate cu modelul
 model.add_cpds(cpd_start_player, cpd_n, cpd_m)
 
@@ -87,3 +91,16 @@ sigma = 6
 
 # generam 200 de valori de timpi de asteptare
 wait_times = np.random.normal(mu, sigma, 200)
+
+# 2
+# modelul
+with pm.Model() as model:
+    mu = pm.Normal('mu', mu=0, sd=6) # ne asumam ca timpul de raspundere la apel este de 0 minute
+    sigma = pm.HalfNormal('sigma', sd=2) # sigma va lua doar valori pozitive
+    wait_time = pm.Normal('wait_time', mu=mu, sd=sigma, observed=wait_times)
+    trace = pm.sample(2000, tune=1000, cores=1, return_inferencedata=False)
+
+# 3 (Salvat ca Figure_1.jpg)
+# with model:
+#     pm.plot_posterior(trace, var_names=['sigma'])
+#     plt.show()
